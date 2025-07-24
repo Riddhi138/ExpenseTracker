@@ -1,5 +1,4 @@
 // This class describes what type of data structure the Expense in app will have
-import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 //to generate unique id dynamically
