@@ -35,9 +35,10 @@ class ExpenseItem extends StatelessWidget
                 const Spacer(),
                 Row(
                   children: [
-                     Icon(Icons.alarm),
+                     Icon(categoryIcons[expense.category]),  //access from the list
                      const SizedBox(width: 8),
-                     Text(expense.date.toString()),
+                     // we dont add () after formattedDate bcz it is getter not method
+                     Text(expense.formattedDate),  // access from formatted date obj created in expense.dart
                     
                     
                   ],

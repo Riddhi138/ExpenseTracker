@@ -1,5 +1,10 @@
 // This class describes what type of data structure the Expense in app will have
 import 'package:uuid/uuid.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+//get the dateformatter class with yMd() method and store it variable
+final formatter = DateFormat.yMd();
 
 //to generate unique id dynamically
 //instantiate class from uuid.dart and store it in form of obj.
@@ -10,6 +15,14 @@ enum Category{
 food, travel, leisure, work
 }
 
+//Icons for different category using enum values
+const categoryIcons = {
+Category.food: Icons.lunch_dining,
+Category.travel: Icons.flight_takeoff,
+Category.leisure: Icons.movie,
+Category.work: Icons.work,
+
+};
 //to group data into single group or various groups 
 class Expense {
   Expense({
@@ -26,5 +39,11 @@ class Expense {
 
   //category to categorize various expense (food,travel,entertainment)
   final Category category;
+
+  //to format date using get method or using getter
+  String get formattedDate      //using getter in dart 
+  {
+    return formatter.format(date);        //format date by manualling importing date module
+  }
 
 }
