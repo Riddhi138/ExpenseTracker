@@ -12,6 +12,7 @@ class ExpenseItem extends StatelessWidget
     //Card widget is like a rectangle butwith shadow and all makes it stand a bit more
     //takes a child parameter
     Card(
+      color: Color.fromARGB(202, 180, 255, 213), 
       child: 
         Padding(
           padding: const EdgeInsets.symmetric(
@@ -20,9 +21,13 @@ class ExpenseItem extends StatelessWidget
           ),
           child:
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            Text(expense.title),
-            const SizedBox( height: 5),
+            Text(
+              expense.title,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+            const SizedBox( height: 20),
+            
             Row(
               children: [
 
