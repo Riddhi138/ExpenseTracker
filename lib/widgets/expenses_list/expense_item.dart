@@ -3,8 +3,9 @@ import 'package:expense_tracker/model/expense.dart';
 
 class ExpenseItem extends StatelessWidget
 {
-  const ExpenseItem (this.expense, {super.key});
+  const ExpenseItem (this.expense, {super.key, required this.onDeleteExpense});
   final Expense expense;
+  final void Function(Expense expense) onDeleteExpense;
   
   @override
   Widget build(context) {
@@ -12,20 +13,50 @@ class ExpenseItem extends StatelessWidget
     //Card widget is like a rectangle butwith shadow and all makes it stand a bit more
     //takes a child parameter
     Card(
-      color: Color.fromARGB(202, 180, 255, 213), 
+     // color: Color.fromARGB(255, 190, 253, 217), 
+      shadowColor: Colors.grey,
+     child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 108, 214, 154),
+              Color.fromARGB(255, 174, 230, 198),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+     
       child: 
         Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 25,
             vertical: 18,
           ),
+    
           child:
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            Text(
-              expense.title,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+            Row(
+              children: [
+                Text(
+                  expense.title,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () {
+                    onDeleteExpense(expense);
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: const Color.fromARGB(255, 36, 38, 155),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox( height: 20),
             
             Row(
@@ -53,6 +84,7 @@ class ExpenseItem extends StatelessWidget
           ],
           ), 
         ),
+    )
     );
 
   }

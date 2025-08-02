@@ -5,8 +5,9 @@ import 'package:flutter/widgets.dart';
 class ExpensesList extends StatelessWidget
 {
   //accepts list of expenses 
-  const ExpensesList ({super.key, required this.expenses,});
+  const ExpensesList ({super.key, required this.expenses, required this.onRemoveExpense});
   final List<Expense> expenses;
+  final void Function(Expense expense) onRemoveExpense;
 
 @override
   Widget build( context) {
@@ -21,7 +22,7 @@ class ExpensesList extends StatelessWidget
     itemCount: expenses.length,
     itemBuilder: (context, index) =>     
       //accessing expense title using index of list 
-      ExpenseItem(expenses[index]),
+      ExpenseItem(expenses[index], onDeleteExpense: onRemoveExpense),
     );
   }
 }
