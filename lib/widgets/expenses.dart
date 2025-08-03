@@ -2,6 +2,7 @@ import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/model/expense.dart';
+import 'package:expense_tracker/widgets/chart/chart.dart';
 
 //take statefulWidget because we need to perform action in app here
 //like add expenses etc
@@ -46,6 +47,7 @@ class _ExpensesState extends State<Expenses>
     //showModalBottomSheet used to show panel : slides up from the bottom of the screen.
     // used to display extra options, forms, or menus without leaving the current page
     showModalBottomSheet(
+      useSafeArea: true,
      isScrollControlled: true,
      context: context, 
      builder : (ctx) =>  NewExpense(onAddExpense: _addExpense,),
@@ -61,40 +63,56 @@ class _ExpensesState extends State<Expenses>
     
   }
 
-  void _deleteExpense(Expense expense) {
+  //delete method
+  void _removeExpense(Expense expense)
+  {
     final expenseIndex = _registeredExpenses.indexOf(expense);
     setState(() {
       _registeredExpenses.remove(expense);
     });
-    
-    // Show undo snackbar
+
+    //to display an undo msg or a notification below
+    //use snackbar provided by the Scaffold
     ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context)
+    .showSnackBar(
       SnackBar(
-        duration: const Duration(seconds: 3),
-        content: const Text('Expense deleted.'),
+        duration: const Duration(seconds: 5),
+        content: const Text('Expense Deleted.'),
         action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            setState(() {
-              _registeredExpenses.insert(expenseIndex, expense);
-            });
-          },
+        label: 'Undo', 
+        onPressed: ()
+        {
+          setState(() {
+            _registeredExpenses.insert(expenseIndex, expense);
+          });
+        }
         ),
-      ),
-    );
+        ),
+        );
   }
 
   @override
   Widget build(context) {
+
+    //to switch between column and row widget based on orientation of the app
+    // use MediaQuery
+    final width = MediaQuery.of(context).size.width;  
+    final height = MediaQuery.of(context).size.height;
+  
     Widget mainContent = const Center(
-      child: Text('No expenses found. Start adding some!'),
+      child: Text('No expenses found. Start adding some!',
+      style: TextStyle(fontSize: 16,
+      fontWeight: FontWeight.bold,
+      
+      ),
+      ),
     );
 
     if (_registeredExpenses.isNotEmpty) {
       mainContent = ExpensesList(
         expenses: _registeredExpenses,
-        onRemoveExpense: _deleteExpense,
+        onRemoveExpense: _removeExpense,
       );
     }
 
@@ -110,12 +128,24 @@ class _ExpensesState extends State<Expenses>
          ),
       ],  //mostly used to add button
     ),
-    body: Column(
+
+    //if width is smaller tha 600 show coloumn widget means potrait orientation
+    body: width < 600 ? Column(
       children: [
-        const Text('The Chart'),
+        Chart(expenses : _registeredExpenses),
         Expanded(child: mainContent),
       ],
-    ),
+    )
+    //if the width > 600 then switch to the horizontal mode
+    : Row(
+      children: [
+        //here parent widget as well as child widget both takes the inf width which
+        //confused flutter to display UI Expanded restrained the child width from taking inf space available
+        //after adding expanded chart and expenses will be disp side by side in horizontal mode
+        Expanded(child: Chart(expenses : _registeredExpenses),), 
+        Expanded(child: mainContent),
+      ],
+    )
    );
   }
 }

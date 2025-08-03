@@ -47,3 +47,39 @@ class Expense {
   }
 
 }
+
+//to sumup data for the chart (real timeincrease decrease)
+
+class ExpenseBucket
+{
+const ExpenseBucket ({required this.category, required this.expenses});
+
+//adding additional constructor functions to class
+//Get the list of all expense and its category
+//this is use to set the value if that value belongs to only that particular category
+// : is use for intializer 
+//.where is use to filter items for particular list
+ExpenseBucket.forCategory(
+  List<Expense> allExpenses, 
+  this.category
+  )
+  //if the particular expense is present in the list then only take it or use it 
+  : expenses = allExpenses.where((expense)=> expense.category == category
+  ).toList();
+
+final Category category;
+final List<Expense> expenses;
+
+//add a getter to get the total utility expenses
+double get totalExpenses 
+{
+  double sum= 0;
+
+  //for in loop to go through each expense in expense list
+  for(final expense in expenses)
+  {
+    sum += expense.amount;
+  }
+  return sum;
+}
+}
